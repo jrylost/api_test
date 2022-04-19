@@ -472,7 +472,6 @@ API文档
 {
     "status":"ok",
     "data":{
-        "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
         "address": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         "value": "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
@@ -487,6 +486,7 @@ API文档
 | --------- | -------- | ------------------------- |
 | status    | string   | 请求处理结果  "ok","error" |
 | \<data\>  | object   |                           |
+| address   | string   | 拥有者账户地址              |
 | key       | string   | KV键值对的key              |
 | value     | string   | KV键值对的value            |
 | \</data\> |          |                           |
