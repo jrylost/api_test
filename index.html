@@ -345,6 +345,12 @@
                   <li>
                     <a href="#03f84c598d" class="toc-h2 toc-link" data-title="文件读取">文件读取</a>
                   </li>
+                  <li>
+                    <a href="#kv" class="toc-h2 toc-link" data-title="KV存储">KV存储</a>
+                  </li>
+                  <li>
+                    <a href="#kv-2" class="toc-h2 toc-link" data-title="KV读取">KV读取</a>
+                  </li>
               </ul>
           </li>
       </ul>
@@ -763,7 +769,7 @@
     </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
         </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"content"</span><span class="p">:</span><span class="s2">"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8="</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"hash"</span><span class="p">:</span><span class="s2">"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"filehash"</span><span class="p">:</span><span class="s2">"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"nonce"</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="w">
         </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
     </span><span class="p">},</span><span class="w">
@@ -809,7 +815,7 @@
 <td>NA</td>
 </tr>
 <tr>
-<td>hash</td>
+<td>filehash</td>
 <td>string</td>
 <td>true</td>
 <td>NA</td>
@@ -859,7 +865,7 @@
         </span><span class="nl">"transaction"</span><span class="p">:{</span><span class="w">
             </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
             </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"filehash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d"</span><span class="p">,</span><span class="w">
             </span><span class="nl">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">},</span><span class="w">
@@ -899,9 +905,9 @@
 <td>文件存储账户地址</td>
 </tr>
 <tr>
-<td>to</td>
+<td>filehash</td>
 <td>string</td>
-<td>转入账户地址</td>
+<td>文件哈希</td>
 </tr>
 <tr>
 <td>nonce</td>
@@ -933,7 +939,7 @@
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
         </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"hash"</span><span class="p">:</span><span class="s2">"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"filehash"</span><span class="p">:</span><span class="s2">"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
@@ -970,7 +976,7 @@
 <td>NA</td>
 </tr>
 <tr>
-<td>hash</td>
+<td>filehash</td>
 <td>string</td>
 <td>true</td>
 <td>NA</td>
@@ -1009,7 +1015,7 @@
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"filehash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"content"</span><span class="p">:</span><span class="s2">"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8="</span><span class="p">,</span><span class="w">
     </span><span class="p">},</span><span class="w">
@@ -1034,7 +1040,7 @@
 <td></td>
 </tr>
 <tr>
-<td>hash</td>
+<td>filehash</td>
 <td>string</td>
 <td>文件哈希</td>
 </tr>
@@ -1047,6 +1053,308 @@
 <td>content</td>
 <td>string</td>
 <td>文件内容(base64-encoded)</td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>UTC时间戳（毫秒）</td>
+</tr>
+</tbody></table>
+<h2 id='kv'>KV存储</h2>
+<p>将KV键值对加密存储到地址<code>address</code>下</p>
+
+<blockquote>
+<p>Request:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"key"</span><span class="p">:</span><span class="s2">"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="s2">"yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"nonce"</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-6'>HTTP 请求</h3>
+<ul>
+<li>POST <code>/files/kvstore</code></li>
+</ul>
+<h3 id='1f9ac54b15-6'>请求参数</h3>
+<table><thead>
+<tr>
+<th>参数</th>
+<th>数据类型</th>
+<th>是否必须</th>
+<th>默认值</th>
+<th>描述</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>转出账户地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>key</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>键值对的key</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>value</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>键值对的value</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>账户操作次数</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>UTC时间戳（毫秒）</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>signature</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>转出账户签名</td>
+<td>NA</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"transaction"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='2213f4c32f-6'>响应数据</h3>
+<table><thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>请求处理结果  &quot;ok&quot;,&quot;error&quot;</td>
+</tr>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;transaction&gt;</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>hash</td>
+<td>string</td>
+<td>交易哈希（KV存储）</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>文件存储账户地址</td>
+</tr>
+<tr>
+<td>key</td>
+<td>string</td>
+<td>KV存储的key</td>
+</tr>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>账户操作次数</td>
+</tr>
+<tr>
+<td>&lt;/transaction&gt;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>UTC时间戳（毫秒）</td>
+</tr>
+</tbody></table>
+<h2 id='kv-2'>KV读取</h2>
+<p>读取地址<code>address</code>下的KV内容，不计入账户操作次数</p>
+
+<blockquote>
+<p>Request:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"key"</span><span class="p">:</span><span class="s2">"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-7'>HTTP 请求</h3>
+<ul>
+<li>POST <code>/files/kvretrieve</code></li>
+</ul>
+<h3 id='1f9ac54b15-7'>请求参数</h3>
+<table><thead>
+<tr>
+<th>参数</th>
+<th>数据类型</th>
+<th>是否必须</th>
+<th>默认值</th>
+<th>描述</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>拥有者账户地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>key</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>KV键值对的key</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>UTC时间戳（毫秒）</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>signature</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>拥有者账户签名</td>
+<td>NA</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='2213f4c32f-7'>响应数据</h3>
+<table><thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>请求处理结果  &quot;ok&quot;,&quot;error&quot;</td>
+</tr>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>key</td>
+<td>string</td>
+<td>KV键值对的key</td>
+</tr>
+<tr>
+<td>value</td>
+<td>string</td>
+<td>KV键值对的value</td>
 </tr>
 <tr>
 <td>&lt;/data&gt;</td>
