@@ -328,6 +328,20 @@
                   <li>
                     <a href="#bd9157656f" class="toc-h2 toc-link" data-title="账户信息">账户信息</a>
                   </li>
+                  <li>
+                    <a href="#8e9ec9ac7d" class="toc-h2 toc-link" data-title="转账">转账</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#49deaf7da2" class="toc-h1 toc-link" data-title="文件">文件</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#093e757485" class="toc-h2 toc-link" data-title="文件存储">文件存储</a>
+                  </li>
+                  <li>
+                    <a href="#03f84c598d" class="toc-h2 toc-link" data-title="文件读取">文件读取</a>
+                  </li>
               </ul>
           </li>
       </ul>
@@ -384,7 +398,7 @@
     </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
         </span><span class="nl">"report"</span><span class="p">:</span><span class="s2">"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8="</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"publicKey"</span><span class="p">:</span><span class="s2">"0x5f7dfa28bf72dc3479c7c2d40096c93e68b075641c8600d0d84a0393610652fb"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"publicKey"</span><span class="p">:</span><span class="s2">"0x40b2132379c2a59096162e5e7c5f692720865a6ce105e90798981892fda7cbdb"</span><span class="p">,</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='2213f4c32f'>响应数据</h3>
@@ -438,7 +452,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-2'>HTTP 请求</h3>
 <ul>
-<li>POST <code>/account/accounts</code></li>
+<li>POST <code>/account/info</code></li>
 </ul>
 <h3 id='1f9ac54b15-2'>请求参数</h3>
 <table><thead>
@@ -537,12 +551,12 @@
 <tr>
 <td>nonce</td>
 <td>int</td>
-<td>账户交易次数</td>
+<td>账户操作次数</td>
 </tr>
 <tr>
 <td>count</td>
 <td>int</td>
-<td>账户中文件数量</td>
+<td>账户拥有文件数量</td>
 </tr>
 <tr>
 <td>&lt;/data&gt;</td>
@@ -553,6 +567,489 @@
 <td>ts</td>
 <td>int</td>
 <td>时间戳</td>
+</tr>
+</tbody></table>
+<h2 id='8e9ec9ac7d'>转账</h2>
+<p>对任意地址 <code>address</code> 进行转账</p>
+
+<blockquote>
+<p>Request:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"from"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"to"</span><span class="p">:</span><span class="s2">"0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"nonce"</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"value"</span><span class="p">:</span><span class="mi">100000000</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-3'>HTTP 请求</h3>
+<ul>
+<li>POST <code>/account/transfer</code></li>
+</ul>
+<h3 id='1f9ac54b15-3'>请求参数</h3>
+<table><thead>
+<tr>
+<th>参数</th>
+<th>数据类型</th>
+<th>是否必须</th>
+<th>默认值</th>
+<th>描述</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>转出账户地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>to</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>转入账户地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>账户操作次数</td>
+<td></td>
+</tr>
+<tr>
+<td>value</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>转账金额</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>UTC时间戳（毫秒）</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>signature</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>转出账户签名</td>
+<td>NA</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"transaction"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">100000000</span><span class="p">,</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='2213f4c32f-3'>响应数据</h3>
+<table><thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>请求处理结果  &quot;ok&quot;,&quot;error&quot;</td>
+</tr>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;transaction&gt;</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>hash</td>
+<td>string</td>
+<td>交易哈希</td>
+</tr>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>转出账户地址</td>
+</tr>
+<tr>
+<td>to</td>
+<td>string</td>
+<td>转入账户地址</td>
+</tr>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>账户操作次数</td>
+</tr>
+<tr>
+<td>value</td>
+<td>int</td>
+<td>转账金额</td>
+</tr>
+<tr>
+<td>&lt;/transaction&gt;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>UTC时间戳（毫秒）</td>
+</tr>
+</tbody></table>
+<h1 id='49deaf7da2'>文件</h1><h2 id='093e757485'>文件存储</h2>
+<p>将文件加密存储到地址<code>address</code>下</p>
+
+<blockquote>
+<p>Request:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"content"</span><span class="p">:</span><span class="s2">"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8="</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="s2">"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"nonce"</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-4'>HTTP 请求</h3>
+<ul>
+<li>POST <code>/files/store</code></li>
+</ul>
+<h3 id='1f9ac54b15-4'>请求参数</h3>
+<table><thead>
+<tr>
+<th>参数</th>
+<th>数据类型</th>
+<th>是否必须</th>
+<th>默认值</th>
+<th>描述</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>转出账户地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>content</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>文件内容(base64-encoded)</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>hash</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>文件哈希（HMAC-SHA256）</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>账户操作次数</td>
+<td></td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>UTC时间戳（毫秒）</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>signature</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>转出账户签名</td>
+<td>NA</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"transaction"</span><span class="p">:{</span><span class="w">
+            </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='2213f4c32f-4'>响应数据</h3>
+<table><thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>请求处理结果  &quot;ok&quot;,&quot;error&quot;</td>
+</tr>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;transaction&gt;</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>hash</td>
+<td>string</td>
+<td>交易哈希（文件存储）</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>文件存储账户地址</td>
+</tr>
+<tr>
+<td>to</td>
+<td>string</td>
+<td>转入账户地址</td>
+</tr>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>账户操作次数</td>
+</tr>
+<tr>
+<td>&lt;/transaction&gt;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>UTC时间戳（毫秒）</td>
+</tr>
+</tbody></table>
+<h2 id='03f84c598d'>文件读取</h2>
+<p>读取地址<code>address</code>下的文件内容，不计入账户操作次数</p>
+
+<blockquote>
+<p>Request:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="s2">"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-5'>HTTP 请求</h3>
+<ul>
+<li>POST <code>/files/retrieve</code></li>
+</ul>
+<h3 id='1f9ac54b15-5'>请求参数</h3>
+<table><thead>
+<tr>
+<th>参数</th>
+<th>数据类型</th>
+<th>是否必须</th>
+<th>默认值</th>
+<th>描述</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>拥有者账户地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>hash</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>文件哈希（HMAC-SHA256）</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>UTC时间戳（毫秒）</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>signature</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>拥有者账户签名</td>
+<td>NA</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"content"</span><span class="p">:</span><span class="s2">"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8="</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='2213f4c32f-5'>响应数据</h3>
+<table><thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>请求处理结果  &quot;ok&quot;,&quot;error&quot;</td>
+</tr>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>hash</td>
+<td>string</td>
+<td>文件哈希</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>文件存储账户地址</td>
+</tr>
+<tr>
+<td>content</td>
+<td>string</td>
+<td>文件内容(base64-encoded)</td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>UTC时间戳（毫秒）</td>
 </tr>
 </tbody></table>
 
