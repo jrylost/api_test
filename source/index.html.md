@@ -19,6 +19,7 @@ code_clipboard: true
 # 简介
 API文档
 
+
 <!--本文文档通过 [Slate](https://github.com/slatedocs/slate)驱动。-->
 
 # 认证
@@ -241,7 +242,7 @@ API文档
     "data":{
         "address":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "content":"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8=",
-        "hash":"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d",
+        "filehash":"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d",
         "nonce":15,
         "ts":1650333610000,
     },
@@ -261,7 +262,7 @@ API文档
 | \<data\>  | object   | true     | NA     |                          | NA       |
 | address   | string   | true     | NA     | 转出账户地址              | NA       |
 | content   | string   | true     | NA     | 文件内容(base64-encoded) | NA       |
-| hash      | string   | true     | NA     | 文件哈希（HMAC-SHA256）   | NA       |
+| filehash  | string   | true     | NA     | 文件哈希（HMAC-SHA256）   | NA       |
 | nonce     | int      | true     | NA     | 账户操作次数              |          |
 | ts        | int      | true     | NA     | UTC时间戳（毫秒）         | NA       |
 | \</data\> |          | true     | NA     |                          | NA       |
@@ -276,7 +277,7 @@ API文档
         "transaction":{
             "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
             "address": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
-            "to": "0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d",
+            "filehash": "0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d",
             "nonce": 15,
         }
     },
@@ -293,7 +294,7 @@ API文档
 | \<transaction\>  | object   |                           |
 | hash             | string   | 交易哈希（文件存储）        |
 | address          | string   | 文件存储账户地址            |
-| to               | string   | 转入账户地址               |
+| filehash         | string   | 文件哈希                   |
 | nonce            | int      | 账户操作次数               |
 | \</transaction\> |          |                           |
 | \</data\>        |          |                           |
@@ -311,7 +312,7 @@ API文档
 {
     "data":{
         "address":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
-        "hash":"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d",
+        "filehash":"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d",
         "ts":1650333610000,
     },
     "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
@@ -329,7 +330,7 @@ API文档
 | --------- | -------- | -------- | ------ | ---------------------- | -------- |
 | \<data\>  | object   | true     | NA     |                        | NA       |
 | address   | string   | true     | NA     | 拥有者账户地址           | NA       |
-| hash      | string   | true     | NA     | 文件哈希（HMAC-SHA256） | NA       |
+| filehash  | string   | true     | NA     | 文件哈希（HMAC-SHA256） | NA       |
 | ts        | int      | true     | NA     | UTC时间戳（毫秒）        | NA       |
 | \</data\> |          | true     | NA     |                        | NA       |
 | signature | string   | true     | NA     | 拥有者账户签名           | NA       |
@@ -340,7 +341,7 @@ API文档
 {
     "status":"ok",
     "data":{
-        "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+        "filehash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
         "address": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "content":"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8=",
     },
@@ -354,8 +355,139 @@ API文档
 | --------- | -------- | ------------------------- |
 | status    | string   | 请求处理结果  "ok","error" |
 | \<data\>  | object   |                           |
-| hash      | string   | 文件哈希                   |
+| filehash  | string   | 文件哈希                   |
 | address   | string   | 文件存储账户地址            |
 | content   | string   | 文件内容(base64-encoded)   |
+| \</data\> |          |                           |
+| ts        | int      | UTC时间戳（毫秒）           |
+
+## KV存储
+
+将KV键值对加密存储到地址`address`下
+
+
+> Request:
+
+```json
+{
+    "data":{
+        "address":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "key":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "value":"yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
+        "nonce":15,
+        "ts":1650333610000,
+    },
+    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+}
+```
+
+### HTTP 请求
+
+- POST `/files/kvstore`
+
+
+### 请求参数
+
+|    参数    | 数据类型 | 是否必须 | 默认值 |       描述       | 取值范围 |
+| --------- | -------- | -------- | ------ | ---------------- | -------- |
+| \<data\>  | object   | true     | NA     |                  | NA       |
+| address   | string   | true     | NA     | 转出账户地址      | NA       |
+| key       | string   | true     | NA     | 键值对的key       | NA       |
+| value     | string   | true     | NA     | 键值对的value     | NA       |
+| nonce     | int      | true     | NA     | 账户操作次数      | NA       |
+| ts        | int      | true     | NA     | UTC时间戳（毫秒） | NA       |
+| \</data\> |          | true     | NA     |                  | NA       |
+| signature | string   | true     | NA     | 转出账户签名      | NA       |
+
+> Response:
+
+```json
+{
+    "status":"ok",
+    "data":{
+        "transaction":{
+            "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+            "address": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+            "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "nonce": 15,
+        }
+    },
+    "ts":1650333610000,
+}
+```
+
+### 响应数据
+
+|     字段名称      | 数据类型 |            描述            |
+| ---------------- | -------- | ------------------------- |
+| status           | string   | 请求处理结果  "ok","error" |
+| \<data\>         | object   |                           |
+| \<transaction\>  | object   |                           |
+| hash             | string   | 交易哈希（KV存储）          |
+| address          | string   | 文件存储账户地址            |
+| key              | string   | KV存储的key                |
+| nonce            | int      | 账户操作次数               |
+| \</transaction\> |          |                           |
+| \</data\>        |          |                           |
+| ts               | int      | UTC时间戳（毫秒）           |
+
+
+## KV读取
+
+读取地址`address`下的KV内容，不计入账户操作次数
+
+
+> Request:
+
+```json
+{
+    "data":{
+        "address":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "key":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "ts":1650333610000,
+    },
+    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+}
+```
+
+### HTTP 请求
+
+- POST `/files/kvretrieve`
+
+
+### 请求参数
+
+|    参数    | 数据类型 | 是否必须 | 默认值 |       描述       | 取值范围 |
+| --------- | -------- | -------- | ------ | ---------------- | -------- |
+| \<data\>  | object   | true     | NA     |                  | NA       |
+| address   | string   | true     | NA     | 拥有者账户地址    | NA       |
+| key       | string   | true     | NA     | KV键值对的key     | NA       |
+| ts        | int      | true     | NA     | UTC时间戳（毫秒） | NA       |
+| \</data\> |          | true     | NA     |                  | NA       |
+| signature | string   | true     | NA     | 拥有者账户签名    | NA       |
+
+> Response:
+
+```json
+{
+    "status":"ok",
+    "data":{
+        "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+        "address": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "value": "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
+    },
+    "ts":1650333610000,
+}
+```
+
+### 响应数据
+
+|  字段名称  | 数据类型 |            描述            |
+| --------- | -------- | ------------------------- |
+| status    | string   | 请求处理结果  "ok","error" |
+| \<data\>  | object   |                           |
+| key       | string   | KV键值对的key              |
+| value     | string   | KV键值对的value            |
 | \</data\> |          |                           |
 | ts        | int      | UTC时间戳（毫秒）           |
