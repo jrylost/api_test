@@ -319,6 +319,17 @@
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#c3d92b20c8" class="toc-h1 toc-link" data-title="账户">账户</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#5ea2e0cde2-2" class="toc-h2 toc-link" data-title="简介">简介</a>
+                  </li>
+                  <li>
+                    <a href="#bd9157656f" class="toc-h2 toc-link" data-title="账户信息">账户信息</a>
+                  </li>
+              </ul>
+          </li>
       </ul>
     </div>
     <div class="page-wrapper">
@@ -329,21 +340,23 @@
 
 <!--本文文档通过 [Slate](https://github.com/slatedocs/slate)驱动。-->
 <h1 id='32c808cbe5'>认证</h1><h2 id='a6093311d4'>获取远程认证报告</h2>
-<p>此接口返回TEE中的远程认证报告，同时生成通信密钥。
-密钥交换算法：ECDH，基于NIST-P256椭圆曲线</p>
+<p>此接口返回TEE中的远程认证报告，同时交换通信密钥。
+密钥交换算法：ECDH，基于NIST-P256椭圆曲线
+具体方法：服务端和客户端基于双方的公钥和自己的私钥生成共享的通信密钥。
+具体参考<a href="https://www.ietf.org/rfc/rfc4419.txt"> Diffie-Hellman Group Exchange for
+            the Secure Shell (SSH) Transport Layer Protocol</a></p>
 
 <blockquote>
 <p>Request:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="nl">"publicKey"</span><span class="p">:</span><span class="s2">"0x"</span><span class="w">
+    </span><span class="nl">"publicKey"</span><span class="p">:</span><span class="s2">"0x5f7dfa28bf72dc3479c7c2d40096c93e68b075641c8600d0d84a0393610652fb"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http'>HTTP 请求</h3>
 <ul>
-<li>POST <code>/report</code>
-### 请求参数</li>
+<li>POST <code>/report</code></li>
 </ul>
-
+<h3 id='1f9ac54b15'>请求参数</h3>
 <table><thead>
 <tr>
 <th>参数</th>
@@ -367,6 +380,17 @@
 <blockquote>
 <p>Response:</p>
 </blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"report"</span><span class="p">:</span><span class="s2">"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8="</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"publicKey"</span><span class="p">:</span><span class="s2">"0x5f7dfa28bf72dc3479c7c2d40096c93e68b075641c8600d0d84a0393610652fb"</span><span class="p">,</span><span class="w">
+
+
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>e5e30a6c17b0721a2aea4f2763615e313daf7509941c209e7bca3539ae4f22c9</p>
 <h3 id='2213f4c32f'>响应数据</h3>
 <table><thead>
 <tr>
@@ -399,6 +423,140 @@
 <td>&lt;/data&gt;</td>
 <td></td>
 <td></td>
+</tr>
+</tbody></table>
+<h1 id='c3d92b20c8'>账户</h1><h2 id='5ea2e0cde2-2'>简介</h2>
+<p>账户相关接口提供了账户查询以及资产交易等功能。</p>
+<h2 id='bd9157656f'>账户信息</h2>
+<p>查询当前账户地址 <code>address</code> 及其相关信息</p>
+
+<blockquote>
+<p>Request:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-2'>HTTP 请求</h3>
+<ul>
+<li>POST <code>/account/accounts</code></li>
+</ul>
+<h3 id='1f9ac54b15-2'>请求参数</h3>
+<table><thead>
+<tr>
+<th>参数</th>
+<th>数据类型</th>
+<th>是否必须</th>
+<th>默认值</th>
+<th>描述</th>
+<th>取值范围</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>账户地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>true</td>
+<td>NA</td>
+<td>UTC时间戳（毫秒）</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td>true</td>
+<td>NA</td>
+<td></td>
+<td>NA</td>
+</tr>
+<tr>
+<td>signature</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>账户签名</td>
+<td>NA</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"address"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"balance"</span><span class="p">:</span><span class="mi">10000000000</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"nonce"</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"count"</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='2213f4c32f-2'>响应数据</h3>
+<table><thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>请求处理结果  &quot;ok&quot;,&quot;error&quot;</td>
+</tr>
+<tr>
+<td>&lt;data&gt;</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>账户地址</td>
+</tr>
+<tr>
+<td>balance</td>
+<td>int</td>
+<td>账户余额</td>
+</tr>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>账户交易次数</td>
+</tr>
+<tr>
+<td>count</td>
+<td>int</td>
+<td>账户中文件数量</td>
+</tr>
+<tr>
+<td>&lt;/data&gt;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ts</td>
+<td>int</td>
+<td>时间戳</td>
 </tr>
 </tbody></table>
 
