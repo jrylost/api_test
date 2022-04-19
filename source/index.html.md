@@ -57,7 +57,7 @@ API文档
     "status":"ok",
     "data":{
         "report":"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8=",
-        "publicKey":"0x5f7dfa28bf72dc3479c7c2d40096c93e68b075641c8600d0d84a0393610652fb",
+        "publicKey":"0x40b2132379c2a59096162e5e7c5f692720865a6ce105e90798981892fda7cbdb",
     }
 }
 ```
@@ -97,7 +97,7 @@ API文档
 
 ### HTTP 请求
 
-- POST `/account/accounts`
+- POST `/account/info`
 
 
 ### 请求参数
@@ -133,7 +133,224 @@ API文档
 | \<data\>  | object   |                           |
 | address   | string   | 账户地址                   |
 | balance   | int      | 账户余额                   |
-| nonce     | int      | 账户交易次数               |
-| count     | int      | 账户中文件数量              |
+| nonce     | int      | 账户操作次数               |
+| count     | int      | 账户拥有文件数量            |
 | \</data\> |          |                           |
 | ts        | int      | 时间戳                     |
+
+## 转账
+
+对任意地址 `address` 进行转账
+
+
+> Request:
+
+```json
+{
+    "data":{
+        "from":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "to":"0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d",
+        "nonce":15,
+        "value":100000000,
+        "ts":1650333610000,
+    },
+    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+}
+```
+
+### HTTP 请求
+
+- POST `/account/transfer`
+
+
+### 请求参数
+
+|    参数    | 数据类型 | 是否必须 | 默认值 |       描述       | 取值范围 |
+| --------- | -------- | -------- | ------ | ---------------- | -------- |
+| \<data\>  | object   | true     | NA     |                  | NA       |
+| from      | string   | true     | NA     | 转出账户地址      | NA       |
+| to        | string   | true     | NA     | 转入账户地址      | NA       |
+| nonce     | int      | true     | NA     | 账户操作次数      |          |
+| value     | int      | true     | NA     | 转账金额          | NA       |
+| ts        | int      | true     | NA     | UTC时间戳（毫秒） | NA       |
+| \</data\> |          | true     | NA     |                  | NA       |
+| signature | string   | true     | NA     | 转出账户签名      | NA       |
+
+> Response:
+
+```json
+{
+    "status":"ok",
+    "data":{
+        "transaction":{
+            "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+            "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+            "to": "0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d",
+            "nonce": 15,
+            "value": 100000000,
+        }
+    },
+    "ts":1650333610000,
+}
+```
+
+### 响应数据
+
+|     字段名称      | 数据类型 |            描述            |
+| ---------------- | -------- | ------------------------- |
+| status           | string   | 请求处理结果  "ok","error" |
+| \<data\>         | object   |                           |
+| \<transaction\>  | object   |                           |
+| hash             | string   | 交易哈希                   |
+| from             | string   | 转出账户地址               |
+| to               | string   | 转入账户地址               |
+| nonce            | int      | 账户操作次数               |
+| value            | int      | 转账金额                   |
+| \</transaction\> |          |                           |
+| \</data\>        |          |                           |
+| ts               | int      | UTC时间戳（毫秒）           |
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 文件
+
+## 文件存储
+
+将文件加密存储到地址`address`下
+
+
+> Request:
+
+```json
+{
+    "data":{
+        "address":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "content":"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8=",
+        "hash":"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d",
+        "nonce":15,
+        "ts":1650333610000,
+    },
+    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+}
+```
+
+### HTTP 请求
+
+- POST `/files/store`
+
+
+### 请求参数
+
+|    参数    | 数据类型 | 是否必须 | 默认值 |           描述           | 取值范围 |
+| --------- | -------- | -------- | ------ | ------------------------ | -------- |
+| \<data\>  | object   | true     | NA     |                          | NA       |
+| address   | string   | true     | NA     | 转出账户地址              | NA       |
+| content   | string   | true     | NA     | 文件内容(base64-encoded) | NA       |
+| hash      | string   | true     | NA     | 文件哈希（HMAC-SHA256）   | NA       |
+| nonce     | int      | true     | NA     | 账户操作次数              |          |
+| ts        | int      | true     | NA     | UTC时间戳（毫秒）         | NA       |
+| \</data\> |          | true     | NA     |                          | NA       |
+| signature | string   | true     | NA     | 转出账户签名              | NA       |
+
+> Response:
+
+```json
+{
+    "status":"ok",
+    "data":{
+        "transaction":{
+            "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+            "address": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+            "to": "0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d",
+            "nonce": 15,
+        }
+    },
+    "ts":1650333610000,
+}
+```
+
+### 响应数据
+
+|     字段名称      | 数据类型 |            描述            |
+| ---------------- | -------- | ------------------------- |
+| status           | string   | 请求处理结果  "ok","error" |
+| \<data\>         | object   |                           |
+| \<transaction\>  | object   |                           |
+| hash             | string   | 交易哈希（文件存储）        |
+| address          | string   | 文件存储账户地址            |
+| to               | string   | 转入账户地址               |
+| nonce            | int      | 账户操作次数               |
+| \</transaction\> |          |                           |
+| \</data\>        |          |                           |
+| ts               | int      | UTC时间戳（毫秒）           |
+
+
+## 文件读取
+
+读取地址`address`下的文件内容，不计入账户操作次数
+
+
+> Request:
+
+```json
+{
+    "data":{
+        "address":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "hash":"0xa4473b3f3a90025c936646d75195a3ab0a4685a31142423121375baed271dd6d",
+        "ts":1650333610000,
+    },
+    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+}
+```
+
+### HTTP 请求
+
+- POST `/files/retrieve`
+
+
+### 请求参数
+
+|    参数    | 数据类型 | 是否必须 | 默认值 |          描述           | 取值范围 |
+| --------- | -------- | -------- | ------ | ---------------------- | -------- |
+| \<data\>  | object   | true     | NA     |                        | NA       |
+| address   | string   | true     | NA     | 拥有者账户地址           | NA       |
+| hash      | string   | true     | NA     | 文件哈希（HMAC-SHA256） | NA       |
+| ts        | int      | true     | NA     | UTC时间戳（毫秒）        | NA       |
+| \</data\> |          | true     | NA     |                        | NA       |
+| signature | string   | true     | NA     | 拥有者账户签名           | NA       |
+
+> Response:
+
+```json
+{
+    "status":"ok",
+    "data":{
+        "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+        "address": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "content":"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8=",
+    },
+    "ts":1650333610000,
+}
+```
+
+### 响应数据
+
+|  字段名称  | 数据类型 |            描述            |
+| --------- | -------- | ------------------------- |
+| status    | string   | 请求处理结果  "ok","error" |
+| \<data\>  | object   |                           |
+| hash      | string   | 文件哈希                   |
+| address   | string   | 文件存储账户地址            |
+| content   | string   | 文件内容(base64-encoded)   |
+| \</data\> |          |                           |
+| ts        | int      | UTC时间戳（毫秒）           |
