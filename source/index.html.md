@@ -171,7 +171,7 @@ API文档
 | \<data\>  | object   | true     | NA     |                  | NA       |
 | from      | string   | true     | NA     | 转出账户地址      | NA       |
 | to        | string   | true     | NA     | 转入账户地址      | NA       |
-| nonce     | int      | true     | NA     | 账户操作次数      |          |
+| nonce     | int      | true     | NA     | 账户操作次数      | NA       |
 | value     | int      | true     | NA     | 转账金额          | NA       |
 | ts        | int      | true     | NA     | UTC时间戳（毫秒） | NA       |
 | \</data\> |          | true     | NA     |                  | NA       |
@@ -263,7 +263,7 @@ API文档
 | address   | string   | true     | NA     | 转出账户地址              | NA       |
 | content   | string   | true     | NA     | 文件内容(base64-encoded) | NA       |
 | filehash  | string   | true     | NA     | 文件哈希（HMAC-SHA256）   | NA       |
-| nonce     | int      | true     | NA     | 账户操作次数              |          |
+| nonce     | int      | true     | NA     | 账户操作次数              | NA       |
 | ts        | int      | true     | NA     | UTC时间戳（毫秒）         | NA       |
 | \</data\> |          | true     | NA     |                          | NA       |
 | signature | string   | true     | NA     | 转出账户签名              | NA       |
