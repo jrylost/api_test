@@ -19,9 +19,7 @@ code_clipboard: true
 # 简介
 API文档
 
-
 <!--本文文档通过 [Slate](https://github.com/slatedocs/slate)驱动。-->
-
 
 # 认证
 
@@ -32,7 +30,6 @@ API文档
 具体方法：服务端和客户端基于双方的公钥和自己的私钥生成共享的通信密钥。
 具体参考[ Diffie-Hellman Group Exchange for
             the Secure Shell (SSH) Transport Layer Protocol](https://www.ietf.org/rfc/rfc4419.txt)
-
 
 > Request:
 
