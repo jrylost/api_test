@@ -224,6 +224,11 @@ API文档
 
 # 文件
 
+## 简介
+文件提供文件存储以及KV键值对存储相关接口信息
+
+<aside class="notice">文件存储和KV存储需要占用账户操作nonce，文件和KV读取不占用操作nonce</aside>
+
 ## 文件存储
 
 将文件加密存储到地址`address`下
