@@ -23,6 +23,7 @@ API文档
 ## 密码学
 
 ### 哈希算法
+
 本文档中哈希算法采用Keccak256，与以太坊采用的Keccak算法相同，参考文档：[The Keccak SHA-3 submission](https://keccak.team/files/Keccak-submission-3.pdf)
 
 对空字串的16进制哈希结果如下 **（这是我们采用的！！！）**：
@@ -42,12 +43,14 @@ API文档
 ### 密钥交换
 
 密钥交换算法：ECDH
+
 椭圆曲线：secp256k1椭圆曲线，参考文档：[SEC 2: Recommended Elliptic Curve Domain Parameters](https://www.secg.org/sec2-v2.pdf)，Chapter 2.4.1
+
 具体方法：服务端和客户端基于双方的公钥和自己的私钥生成共享的通信密钥。
+
 具体步骤：
 
-
-* 若服务端私钥为a，客户端私钥为a，互相共享公钥<p>$g^a$</p>，$g^b$；
+* 若服务端私钥为a，客户端私钥为a，互相共享公钥$g^a$，$g^b$；
 * 双方计算得到$g^{ab}$，取得$g^{ab}$的$x$坐标为共享秘密(Shared Secret)；
 * 将$x$转化为二进制表示并作哈希，得到密钥，Shared Private Key = Keccak256(x)；
 * Shared Private Key为服务端和客户端共享密钥。
