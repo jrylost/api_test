@@ -368,22 +368,27 @@
 <h2 id='8479e0d8f1'>密码学</h2><h3 id='b6ea0752d4'>哈希算法</h3>
 <p>本文档中哈希算法采用Keccak256，与以太坊采用的Keccak算法相同，参考文档：<a href="https://keccak.team/files/Keccak-submission-3.pdf">The Keccak SHA-3 submission</a></p>
 
-<p>对空字串的16进制哈希结果如下 <strong>（这是我们采用的！！！）</strong>：
-<code>Keccak256() = c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470</code></p>
+<p>对空字串的16进制哈希结果如下 <strong>（这是我们采用的！！！）</strong>：</p>
 
-<p>值得注意的是，由于以太坊采用的Keccak哈希算法并非NIST-SHA3所采纳的Keccak最终版本，两者有细微差别，因此我们需要注意使用的哈希算法是否为<a href="https://github.com/ethereum/EIPs/issues/59">以太坊Keccak</a>。同时根据NIST提供的<a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">SHA3算法</a>的文档中，对空字串的哈希结果如下 <strong>（这不是我们采用的！！！）</strong>：
-<code>SHA3-256() = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a</code></p>
+<p><code>Keccak256() = c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470</code></p>
+
+<p>值得注意的是，由于以太坊采用的Keccak哈希算法并非NIST-SHA3所采纳的Keccak最终版本，两者有细微差别，因此我们需要注意使用的哈希算法是否为<a href="https://github.com/ethereum/EIPs/issues/59">以太坊Keccak</a>。同时根据NIST提供的<a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">SHA3算法</a>的文档中，对空字串的哈希结果如下 <strong>（这不是我们采用的！！！）</strong>：</p>
+
+<p><code>SHA3-256() = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a</code></p>
 
 <p>两者区别的详情请参考：<a href="https://ethereum.stackexchange.com/questions/550/which-cryptographic-hash-function-does-ethereum-use#:~:text=Ethereum%20uses%20KECCAK-256.%20It%20should%20be%20noted%20that,%28M%29%20%3D%20KECCAK%20%5B512%5D%20%28M%20%7C%7C%2001%2C%20256%29.">Stackoverflow上的回答</a></p>
 <h3 id='8ba46c43fe'>签名</h3><h3 id='914dc8de3d'>非对称加密</h3><h3 id='096b712f8a'>密钥交换</h3>
 <p>密钥交换算法：ECDH
 椭圆曲线：secp256k1椭圆曲线，参考文档：<a href="https://www.secg.org/sec2-v2.pdf">SEC 2: Recommended Elliptic Curve Domain Parameters</a>，Chapter 2.4.1
 具体方法：服务端和客户端基于双方的公钥和自己的私钥生成共享的通信密钥。
-具体步骤：
-1. 若服务端私钥为a，客户端私钥为a，互相共享公钥$g^a$，$g^b$；
-2. 双方计算得到$g^{ab}$，取得$g^{ab}$的$x$坐标为共享秘密(Shared Secret)；
-3. 将$x$转化为二进制表示并作哈希，得到密钥，Shared Private Key = Keccak256(x)；
-4. Shared Private Key为服务端和客户端共享密钥。</p>
+具体步骤：</p>
+
+<ul>
+<li>若服务端私钥为a，客户端私钥为a，互相共享公钥<p>$g^a$</p>，$g^b$；</li>
+<li>双方计算得到$g^{ab}$，取得$g^{ab}$的$x$坐标为共享秘密(Shared Secret)；</li>
+<li>将$x$转化为二进制表示并作哈希，得到密钥，Shared Private Key = Keccak256(x)；</li>
+<li>Shared Private Key为服务端和客户端共享密钥。</li>
+</ul>
 
 <p>参考文档：<a href="https://www.rfc-editor.org/rfc/rfc5903.html">Elliptic Curve Groups modulo a Prime (ECP Groups) for IKE and IKEv2</a>的Section 9</p>
 <h3 id='23e3589849'>对称加密</h3>
