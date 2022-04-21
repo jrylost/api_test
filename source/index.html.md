@@ -26,9 +26,11 @@ API文档
 本文档中哈希算法采用Keccak256，与以太坊采用的Keccak算法相同，参考文档：[The Keccak SHA-3 submission](https://keccak.team/files/Keccak-submission-3.pdf)
 
 对空字串的16进制哈希结果如下 **（这是我们采用的！！！）**：
+
 `Keccak256() = c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470`
 
 值得注意的是，由于以太坊采用的Keccak哈希算法并非NIST-SHA3所采纳的Keccak最终版本，两者有细微差别，因此我们需要注意使用的哈希算法是否为[以太坊Keccak](https://github.com/ethereum/EIPs/issues/59)。同时根据NIST提供的[SHA3算法](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf)的文档中，对空字串的哈希结果如下 **（这不是我们采用的！！！）**：
+
 `SHA3-256() = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a`
 
 两者区别的详情请参考：[Stackoverflow上的回答](https://ethereum.stackexchange.com/questions/550/which-cryptographic-hash-function-does-ethereum-use#:~:text=Ethereum%20uses%20KECCAK-256.%20It%20should%20be%20noted%20that,%28M%29%20%3D%20KECCAK%20%5B512%5D%20%28M%20%7C%7C%2001%2C%20256%29.)
@@ -43,10 +45,12 @@ API文档
 椭圆曲线：secp256k1椭圆曲线，参考文档：[SEC 2: Recommended Elliptic Curve Domain Parameters](https://www.secg.org/sec2-v2.pdf)，Chapter 2.4.1
 具体方法：服务端和客户端基于双方的公钥和自己的私钥生成共享的通信密钥。
 具体步骤：
-1. 若服务端私钥为a，客户端私钥为a，互相共享公钥$g^a$，$g^b$；
-2. 双方计算得到$g^{ab}$，取得$g^{ab}$的$x$坐标为共享秘密(Shared Secret)；
-3. 将$x$转化为二进制表示并作哈希，得到密钥，Shared Private Key = Keccak256(x)；
-4. Shared Private Key为服务端和客户端共享密钥。
+
+
+* 若服务端私钥为a，客户端私钥为a，互相共享公钥<p>$g^a$</p>，$g^b$；
+* 双方计算得到$g^{ab}$，取得$g^{ab}$的$x$坐标为共享秘密(Shared Secret)；
+* 将$x$转化为二进制表示并作哈希，得到密钥，Shared Private Key = Keccak256(x)；
+* Shared Private Key为服务端和客户端共享密钥。
 
 参考文档：[Elliptic Curve Groups modulo a Prime (ECP Groups) for IKE and IKEv2](https://www.rfc-editor.org/rfc/rfc5903.html)的Section 9
 
