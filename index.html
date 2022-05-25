@@ -409,10 +409,7 @@
 <blockquote>
 <p>Request:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="nl">"publicKey"</span><span class="p">:</span><span class="s2">"0x5f7dfa28bf72dc3479c7c2d40096c93e68b075641c8600d0d84a0393610652fb"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http'>HTTP 请求</h3>
+<h3 id='http'>HTTP 请求</h3>
 <ul>
 <li>POST <code>/report</code></li>
 </ul>
@@ -428,12 +425,12 @@
 </tr>
 </thead><tbody>
 <tr>
-<td>publicKey</td>
-<td>string</td>
-<td>true</td>
-<td>NA</td>
-<td>客户端基于私钥生成的公钥</td>
-<td>NA</td>
+<td>无参数</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 </tbody></table>
 
@@ -444,7 +441,7 @@
     </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
         </span><span class="nl">"report"</span><span class="p">:</span><span class="s2">"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8="</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"publicKey"</span><span class="p">:</span><span class="s2">"0x40b2132379c2a59096162e5e7c5f692720865a6ce105e90798981892fda7cbdb"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"cert"</span><span class="p">:</span><span class="s2">"DVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLbQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896PbQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896PbQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896PbQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P"</span><span class="p">,</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='2213f4c32f'>响应数据</h3>
@@ -471,9 +468,9 @@
 <td>远程认证报告，base64-encoded</td>
 </tr>
 <tr>
-<td>publicKey</td>
+<td>cert</td>
 <td>string</td>
-<td>服务器端基于私钥生成的公钥</td>
+<td>tls证书，base64-encoded</td>
 </tr>
 <tr>
 <td>&lt;/data&gt;</td>
