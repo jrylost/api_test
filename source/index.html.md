@@ -59,16 +59,13 @@ API文档
 
 ### 对称加密
 
-
 ### 通信
 
 本文档通信采用TLS加密通信，Certificate格式如下：
-|    参数 | 数据类型	| 是否必须	| 默认值|          描述			| 取值范围	|
-| ---------	| --------	| --------	| ------| ----------------------| --------	|
-| 无参数	|			|			|		|						|			|
 
-
-
+|    参数 | 数据类型 | 是否必须 | 默认值|          描述   | 取值范围 |
+| --------- | -------- | -------- | ------| ----------------------| -------- |
+| 无参数 |   |   |  |      |   |
 
 <!--本文文档通过 [Slate](https://github.com/slatedocs/slate)驱动。-->
 
@@ -78,20 +75,17 @@ API文档
 
 此接口返回TEE中的远程认证报告，同时交换通信密钥。
 
-
 > Request:
-
 
 ### HTTP 请求
 
 - POST `/report`
 
-
 ### 请求参数
 
-|    参数	| 数据类型	| 是否必须	| 默认值|          描述			| 取值范围	|
-| ---------	| --------	| --------	| ------| ----------------------| --------	|
-| 无参数	|			|			|		|						|			|
+|    参数 | 数据类型 | 是否必须 | 默认值|          描述   | 取值范围 |
+| --------- | -------- | -------- | ------| ----------------------| -------- |
+| 无参数 |   |   |  |      |   |
 
 > Response:
 
@@ -107,13 +101,135 @@ API文档
 
 ### 响应数据
 
-|  字段名称	| 数据类型	|            描述				|
-| ---------	| --------	| ---------------------------	|
-| status	| string	| 请求处理结果  "ok","error"   	|
-| \<data\>	| object	|								|
-| report	| string	| 远程认证报告，base64-encoded	|
-| cert		| string	| tls证书，base64-encoded		|
-| \</data\>	|			|								|
+|  字段名称 | 数据类型 |            描述    |
+| --------- | -------- | --------------------------- |
+| status | string | 请求处理结果  "ok","error"    |
+| \<data\> | object |        |
+| report | string | 远程认证报告，base64-encoded |
+| cert  | string | tls证书，base64-encoded  |
+| \</data\> |   |        |
+
+# 区块与交易信息
+
+## 区块信息
+
+查询当前区块区块号 `number` 相关信息
+
+> Request:
+
+```json
+{
+    "data":{
+        "number":1684633435,
+        "ts":1650333610000,
+    },
+    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+}
+```
+
+### HTTP 请求
+
+- POST `/block/info`
+
+### 请求参数
+
+|    参数 | 数据类型 | 是否必须 | 默认值|       描述  | 取值范围 |
+| --------- | -------- | -------- | ------| ---------------- | -------- |
+| \<data\> | object | true  | NA |     | NA  |
+| number | int | true  | NA | 区块号   | NA  |
+| ts  | int  | true  | NA | UTC时间戳（毫秒） | NA  |
+| \</data\> |   | true  | NA |     | NA  |
+| signature | string | true  | NA | 账户签名   | NA  |
+
+> Response:
+
+```json
+{
+    "status":"ok",
+    "data":{
+        "number":1684633435,
+        "transactions":[
+            "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+            "0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+            ],
+        "count":2,
+    },
+    "ts":1650333610000,
+}
+```
+
+### 响应数据
+
+| 字段名称  | 数据类型 | 描述                       |
+| --------- | -------- | -------------------------- |
+| status    | string   | 请求处理结果  "ok","error" |
+| \<data\>  | object   |                            |
+| number   | int64   | 区块号                   |
+| \<transactions\>   | array      | 列举交易哈希                   |
+| hash1   | string   | 交易哈希                   |
+| hash2   | string   | 交易哈希                   |
+| ...   | ...   | ...                   |
+| hashn   | string   | 交易哈希                   |
+| \</transactions\>   |       |                    |
+| count     | int      | 区块中的交易数量           |
+| \</data\> |          |                            |
+| ts        | int      | 时间戳                     |
+
+## 交易信息
+
+查询当前交易哈希 `hash` 相关信息
+
+> Request:
+
+```json
+{
+    "data":{
+        "hash":"0x02cd1c248d6bb2a1f2002646a29cb9cfda45b61d8f43fb8328e221224ef38d4f56",
+        "ts":1650333610000,
+    },
+    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+}
+```
+
+### HTTP 请求
+
+- POST `/transaction/info`
+
+### 请求参数
+
+|    参数 | 数据类型 | 是否必须 | 默认值|       描述  | 取值范围 |
+| --------- | -------- | -------- | ------| ---------------- | -------- |
+| \<data\> | object | true  | NA |     | NA  |
+| hash | string | true  | NA | 交易哈希   | NA  |
+| ts  | int  | true  | NA | UTC时间戳（毫秒） | NA  |
+| \</data\> |   | true  | NA |     | NA  |
+| signature | string | true  | NA | 账户签名   | NA  |
+
+> Response:
+
+```json
+{
+    "status":"ok",
+    "data":{
+        "hash":"0x02cd1c248d6bb2a1f2002646a29cb9cfda45b61d8f43fb8328e221224ef38d4f56",
+        "type":"File store",
+        "transactionTs":1640111610000,
+    },
+    "ts":1650333610000,
+}
+```
+
+### 响应数据
+
+| 字段名称  | 数据类型 | 描述                       |
+| --------- | -------- | -------------------------- |
+| status    | string   | 请求处理结果  "ok","error" |
+| \<data\>  | object   |                            |
+| hash   | string   | 交易哈希                   |
+| type   | string   | 交易类型（"File store", "KV store", "Contract depoly", "Contract call"）                   |
+| transactionTs        | int      | 交易时间戳                     |
+| \</data\> |          |                            |
+| ts        | int      | 时间戳                     |
 
 # 账户
 
@@ -132,12 +248,12 @@ API文档
 ```
 
 ### 账户地址格式
+
 地址为以太坊格式的公钥，压缩公钥或非压缩公钥均可。（私钥32字节，压缩公钥33字节，非压缩公钥65字节）
 
 ## 账户信息
 
 查询当前账户地址 `address` 及其相关信息
-
 
 > Request:
 
@@ -197,7 +313,6 @@ API文档
 
 对任意地址 `address` 进行转账
 
-
 > Request:
 
 ```json
@@ -216,7 +331,6 @@ API文档
 ### HTTP 请求
 
 - POST `/account/transfer`
-
 
 ### 请求参数
 
@@ -265,21 +379,10 @@ API文档
 | \</data\>        |          |                            |
 | ts               | int      | UTC时间戳（毫秒）          |
 
-
-
-
-
-
-
-
-
-
-
-
-
 # 文件
 
 ## 简介
+
 文件提供文件存储以及KV键值对存储相关接口信息
 
 <aside class="notice">文件存储和KV存储需要占用账户操作nonce，文件和KV读取不占用操作nonce</aside>
@@ -287,7 +390,6 @@ API文档
 ## 文件存储
 
 将文件加密存储到地址`from`下
-
 
 > Request:
 
@@ -307,7 +409,6 @@ API文档
 ### HTTP 请求
 
 - POST `/files/store`
-
 
 ### 请求参数
 
@@ -350,11 +451,9 @@ API文档
 | \</transaction\> |          |                            |
 | ts               | int      | UTC时间戳（毫秒）          |
 
-
 ## 文件读取
 
 读取地址`from`下的文件内容，不计入账户操作次数
-
 
 > Request:
 
@@ -372,7 +471,6 @@ API文档
 ### HTTP 请求
 
 - POST `/files/retrieve`
-
 
 ### 请求参数
 
@@ -415,7 +513,6 @@ API文档
 
 将KV键值对加密存储到地址`from`下
 
-
 > Request:
 
 ```json
@@ -434,7 +531,6 @@ API文档
 ### HTTP 请求
 
 - POST `/kv/store`
-
 
 ### 请求参数
 
@@ -477,11 +573,9 @@ API文档
 | \</transaction\> |          |                            |
 | ts               | int      | UTC时间戳（毫秒）          |
 
-
 ## KV读取
 
 读取地址`from`下的KV内容，不计入账户操作次数
-
 
 > Request:
 
@@ -499,7 +593,6 @@ API文档
 ### HTTP 请求
 
 - POST `/kv/retrieve`
-
 
 ### 请求参数
 
@@ -537,3 +630,136 @@ API文档
 | value     | string   | KV键值对的value            |
 | \</transaction\> |          |                            |
 | ts        | int      | UTC时间戳（毫秒）          |
+
+
+
+# 智能合约
+
+## 智能合约代码示例
+
+> Example:
+
+```go
+
+
+```
+
+## 智能合约部署
+
+智能合约信息部署
+
+> Request:
+
+```json
+{
+    "data":{
+        "number":1684633435,
+        "ts":1650333610000,
+    },
+    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+}
+```
+
+### HTTP 请求
+
+- POST `/block/info`
+
+### 请求参数
+
+|    参数 | 数据类型 | 是否必须 | 默认值|       描述  | 取值范围 |
+| --------- | -------- | -------- | ------| ---------------- | -------- |
+| \<data\> | object | true  | NA |     | NA  |
+| number | int | true  | NA | 区块号   | NA  |
+| ts  | int  | true  | NA | UTC时间戳（毫秒） | NA  |
+| \</data\> |   | true  | NA |     | NA  |
+| signature | string | true  | NA | 账户签名   | NA  |
+
+> Response:
+
+```json
+{
+    "status":"ok",
+    "data":{
+        "number":1684633435,
+        "transactions":[
+            "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+            "0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+            ],
+        "count":2,
+    },
+    "ts":1650333610000,
+}
+```
+
+### 响应数据
+
+| 字段名称  | 数据类型 | 描述                       |
+| --------- | -------- | -------------------------- |
+| status    | string   | 请求处理结果  "ok","error" |
+| \<data\>  | object   |                            |
+| number   | int64   | 区块号                   |
+| \<transactions\>   | array      | 列举交易哈希                   |
+| hash1   | string   | 交易哈希                   |
+| hash2   | string   | 交易哈希                   |
+| ...   | ...   | ...                   |
+| hashn   | string   | 交易哈希                   |
+| \</transactions\>   |       |                    |
+| count     | int      | 区块中的交易数量           |
+| \</data\> |          |                            |
+| ts        | int      | 时间戳                     |
+
+## 交易信息
+
+查询当前交易哈希 `hash` 相关信息
+
+> Request:
+
+```json
+{
+    "data":{
+        "hash":"0x02cd1c248d6bb2a1f2002646a29cb9cfda45b61d8f43fb8328e221224ef38d4f56",
+        "ts":1650333610000,
+    },
+    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+}
+```
+
+### HTTP 请求
+
+- POST `/transaction/info`
+
+### 请求参数
+
+|    参数 | 数据类型 | 是否必须 | 默认值|       描述  | 取值范围 |
+| --------- | -------- | -------- | ------| ---------------- | -------- |
+| \<data\> | object | true  | NA |     | NA  |
+| hash | string | true  | NA | 交易哈希   | NA  |
+| ts  | int  | true  | NA | UTC时间戳（毫秒） | NA  |
+| \</data\> |   | true  | NA |     | NA  |
+| signature | string | true  | NA | 账户签名   | NA  |
+
+> Response:
+
+```json
+{
+    "status":"ok",
+    "data":{
+        "hash":"0x02cd1c248d6bb2a1f2002646a29cb9cfda45b61d8f43fb8328e221224ef38d4f56",
+        "type":"File store",
+        "transactionTs":1640111610000,
+    },
+    "ts":1650333610000,
+}
+```
+
+### 响应数据
+
+| 字段名称  | 数据类型 | 描述                       |
+| --------- | -------- | -------------------------- |
+| status    | string   | 请求处理结果  "ok","error" |
+| \<data\>  | object   |                            |
+| hash   | string   | 交易哈希                   |
+| type   | string   | 交易类型（"File store", "KV store", "Contract depoly", "Contract call"）                   |
+| transactionTs        | int      | 交易时间戳                     |
+| \</data\> |          |                            |
+| ts        | int      | 时间戳                     |
