@@ -383,10 +383,16 @@
                     <a href="#67866f3fb9" class="toc-h2 toc-link" data-title="智能合约代码示例">智能合约代码示例</a>
                   </li>
                   <li>
+                    <a href="#abi" class="toc-h2 toc-link" data-title="智能合约ABI示例">智能合约ABI示例</a>
+                  </li>
+                  <li>
+                    <a href="#functioninputs" class="toc-h2 toc-link" data-title="FunctionInputs示例">FunctionInputs示例</a>
+                  </li>
+                  <li>
                     <a href="#ea7fc41fbf" class="toc-h2 toc-link" data-title="智能合约部署">智能合约部署</a>
                   </li>
                   <li>
-                    <a href="#dd09b2f1a9-2" class="toc-h2 toc-link" data-title="交易信息">交易信息</a>
+                    <a href="#6e8d262c42" class="toc-h2 toc-link" data-title="智能合约调用">智能合约调用</a>
                   </li>
               </ul>
           </li>
@@ -1723,9 +1729,221 @@
 <blockquote>
 <p>Example:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight go tab-go"><code>
+<div class="highlight"><pre class="highlight go tab-go"><code><span class="k">package</span> <span class="n">evidence_v6</span>
 
-</code></pre></div><h2 id='ea7fc41fbf'>智能合约部署</h2>
+<span class="k">import</span> <span class="p">(</span>
+    <span class="s">"encoding/json"</span>
+    <span class="s">"ContractContext"</span>
+<span class="p">)</span>
+
+<span class="k">type</span> <span class="n">Error</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">message</span> <span class="kt">string</span>
+    <span class="n">payload</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">EvidenceInfo</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">EvidenceId</span>   <span class="kt">string</span> <span class="s">`json:"evidenceId"`</span>
+    <span class="n">UploaderSign</span> <span class="kt">string</span> <span class="s">`json:"uploaderSign"`</span>
+    <span class="n">EvidenceTxId</span> <span class="kt">string</span> <span class="s">`json:"evidenceTxId"`</span>
+    <span class="n">Content</span>      <span class="kt">string</span> <span class="s">`json:"content"`</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">CreateResult</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">EvidenceId</span>  <span class="kt">string</span> <span class="s">`json:"evidenceId,omitempty"`</span>
+    <span class="n">TxId</span>        <span class="kt">string</span> <span class="s">`json:"txId,omitempty"`</span>
+    <span class="n">TxTimestamp</span> <span class="kt">string</span> <span class="s">`json:"txTimestamp,omitempty"`</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">QueryResult</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">Key</span>      <span class="kt">string</span> <span class="s">`json:"key,omitempty"`</span>
+    <span class="n">Record</span>   <span class="kt">string</span> <span class="s">`json:"record,omitempty"`</span>
+    <span class="n">Bookmark</span> <span class="kt">string</span> <span class="s">`json:"bookmark,omitempty"`</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">AddEvidence</span><span class="p">(</span><span class="n">context</span> <span class="n">ContractContext</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">data</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="n">CreateResult</span> <span class="p">{</span>
+    <span class="n">evidenceinfo</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="n">EvidenceInfo</span><span class="p">{}</span>
+    <span class="n">err</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Unmarshal</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">evidenceinfo</span><span class="p">)</span>
+    <span class="n">stub</span> <span class="o">:=</span> <span class="n">context</span><span class="o">.</span><span class="n">Getstub</span><span class="p">()</span>
+    <span class="n">key</span> <span class="o">:=</span> <span class="n">FormatEvidenceKey</span><span class="p">(</span><span class="n">evidenceinfo</span><span class="o">.</span><span class="n">EvidenceId</span><span class="p">)</span>
+    <span class="n">evidenceState</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">stub</span><span class="o">.</span><span class="n">GetStringState</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="n">Error</span><span class="p">{</span>
+            <span class="n">message</span><span class="o">:</span> <span class="s">"Evidence "</span> <span class="o">+</span> <span class="n">evidenceinfo</span><span class="o">.</span><span class="n">EvidenceId</span> <span class="o">+</span> <span class="s">" already exists"</span><span class="p">,</span>
+            <span class="n">payload</span><span class="o">:</span> <span class="s">"EVIDENCE_ALREADY_EXIST"</span><span class="p">,</span>
+        <span class="p">})</span>
+
+    <span class="p">}</span>
+    <span class="n">txId</span> <span class="o">:=</span> <span class="n">stub</span><span class="o">.</span><span class="n">GetTxId</span><span class="p">()</span>
+    <span class="n">timeStamp</span> <span class="o">:=</span> <span class="n">stub</span><span class="o">.</span><span class="n">GetTxTimestamp</span><span class="p">()</span>
+    <span class="n">evidenceinfo</span><span class="o">.</span><span class="n">EvidenceTxId</span> <span class="o">=</span> <span class="n">txId</span>
+    <span class="n">stub</span><span class="o">.</span><span class="n">PutStringState</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">evidenceState</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="n">CreateResult</span><span class="p">{</span>
+        <span class="n">EvidenceId</span><span class="o">:</span>  <span class="n">evidenceinfo</span><span class="o">.</span><span class="n">EvidenceId</span><span class="p">,</span>
+        <span class="n">TxId</span><span class="o">:</span>        <span class="n">txId</span><span class="p">,</span>
+        <span class="n">TxTimestamp</span><span class="o">:</span> <span class="n">timeStamp</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">QueryEvidenceById</span><span class="p">(</span><span class="n">context</span> <span class="n">ContractContext</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">evidenceId</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="n">QueryResult</span> <span class="p">{</span>
+    <span class="n">stub</span> <span class="o">:=</span> <span class="n">context</span><span class="o">.</span><span class="n">Getstub</span><span class="p">()</span>
+    <span class="n">evidenceState</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">stub</span><span class="o">.</span><span class="n">GetStringState</span><span class="p">(</span><span class="n">evidenceId</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="n">Error</span><span class="p">{</span>
+            <span class="n">message</span><span class="o">:</span> <span class="n">evidenceId</span><span class="p">,</span>
+            <span class="n">payload</span><span class="o">:</span> <span class="s">"NO_EVIDENCE_FOUND"</span><span class="p">,</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="n">QueryResult</span><span class="p">{</span>
+        <span class="n">Key</span><span class="o">:</span>      <span class="n">evidenceId</span><span class="p">,</span>
+        <span class="n">Record</span><span class="o">:</span>   <span class="n">evidenceState</span><span class="p">,</span>
+        <span class="n">Bookmark</span><span class="o">:</span> <span class="s">""</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">QueryEvidenceByTxId</span><span class="p">(</span><span class="n">context</span> <span class="n">ContractContext</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">txId</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="n">QueryResult</span> <span class="p">{</span>
+    <span class="n">stub</span> <span class="o">:=</span> <span class="n">context</span><span class="o">.</span><span class="n">Getstub</span><span class="p">()</span>
+    <span class="n">query</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="k">struct</span> <span class="p">{</span>
+        <span class="n">Selector</span> <span class="kt">string</span> <span class="s">`json:"selector"`</span>
+    <span class="p">}{</span><span class="n">Selector</span><span class="o">:</span> <span class="n">txId</span><span class="p">})</span>
+    <span class="n">evidenceState</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="n">stub</span><span class="o">.</span><span class="n">GetQueryResult</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">query</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="n">QueryResult</span><span class="p">{</span>
+        <span class="n">Key</span><span class="o">:</span>      <span class="n">txId</span><span class="p">,</span>
+        <span class="n">Record</span><span class="o">:</span>   <span class="kt">string</span><span class="p">(</span><span class="n">evidenceState</span><span class="p">),</span>
+        <span class="n">Bookmark</span><span class="o">:</span> <span class="s">""</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">FormatEvidenceKey</span><span class="p">(</span><span class="n">evidenceId</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s">"Evi_"</span> <span class="o">+</span> <span class="n">evidenceId</span>
+<span class="p">}</span>
+
+
+</code></pre></div><h2 id='abi'>智能合约ABI示例</h2>
+<blockquote>
+<p>Example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"contract_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"evidence_v6"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"contract_info"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"This is contract evidence_v6"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"contract_function"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"function_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"AddEvidence"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"function_inputs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"input_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"context"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"input_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"context"</span><span class="w"> 
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"input_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"input_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w"> 
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"function_outputs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"output_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"CreateResult"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"output_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"struct"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"output_component"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"component_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"evidenceId"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"component_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"component_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"txId"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"component_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"component_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"txTimestamp"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"component_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">]</span><span class="w"> 
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"function_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"QueryEvidenceById"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"function_inputs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"input_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"context"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"input_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"context"</span><span class="w"> 
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"input_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"evidenceId"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"input_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w"> 
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"function_outputs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"output_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"QueryResult"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"output_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"struct"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"output_component"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"component_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"key"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"component_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"component_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"record"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"component_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"component_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"bookmark"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"component_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">]</span><span class="w"> 
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"function_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"AddEvidence"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"function_inputs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"input_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"context"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"input_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"context"</span><span class="w"> 
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"input_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"txId"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"input_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w"> 
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"function_outputs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"output_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"QueryResult"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"output_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"struct"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"output_component"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"component_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"key"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"component_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"component_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"record"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"component_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="nl">"component_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"bookmark"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"component_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">]</span><span class="w"> 
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2 id='functioninputs'>FunctionInputs示例</h2>
+<blockquote>
+<p>Example:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"input_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"context"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"input_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"context"</span><span class="p">,</span><span class="w"> 
+        </span><span class="nl">"input_value"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"input_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"data"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"input_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"input_value"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">evidenceId</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">aa</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">uploaderSign</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">cc</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">content</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">dd</span><span class="se">\"</span><span class="s2">}"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div><h2 id='ea7fc41fbf'>智能合约部署</h2>
 <p>智能合约信息部署</p>
 
 <blockquote>
@@ -1733,14 +1951,18 @@
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-        </span><span class="nl">"number"</span><span class="p">:</span><span class="mi">1684633435</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="s2">"evidence_v6"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"abi"</span><span class="p">:</span><span class="s2">"智能合约ABI示例中的内容"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"from"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"code"</span><span class="p">:</span><span class="s2">"智能合约代码示例中的内容"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"codeHash"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
     </span><span class="p">},</span><span class="w">
-    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
+    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-10'>HTTP 请求</h3>
 <ul>
-<li>POST <code>/block/info</code></li>
+<li>POST <code>/contract/deploy</code></li>
 </ul>
 <h3 id='1f9ac54b15-10'>请求参数</h3>
 <table><thead>
@@ -1762,11 +1984,43 @@
 <td>NA</td>
 </tr>
 <tr>
-<td>number</td>
-<td>int</td>
+<td>name</td>
+<td>string</td>
 <td>true</td>
 <td>NA</td>
-<td>区块号</td>
+<td>合约名称</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>abi</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>合约ABI</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>合约拥有者账户地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>code</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>合约代码</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>codeHash</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>合约代码哈希(keccak-256)</td>
 <td>NA</td>
 </tr>
 <tr>
@@ -1800,13 +2054,12 @@
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-        </span><span class="nl">"number"</span><span class="p">:</span><span class="mi">1684633435</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"transactions"</span><span class="p">:[</span><span class="w">
-            </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
-            </span><span class="p">],</span><span class="w">
-        </span><span class="nl">"count"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"transaction"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"contractAddress"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"nonce"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"codeHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="p">,</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -1824,77 +2077,66 @@
 <td>请求处理结果  &quot;ok&quot;,&quot;error&quot;</td>
 </tr>
 <tr>
-<td>&lt;data&gt;</td>
+<td>&lt;transaction&gt;</td>
 <td>object</td>
 <td></td>
 </tr>
 <tr>
-<td>number</td>
-<td>int64</td>
-<td>区块号</td>
+<td>from</td>
+<td>string</td>
+<td>拥有者账户地址</td>
 </tr>
 <tr>
-<td>&lt;transactions&gt;</td>
-<td>array</td>
-<td>列举交易哈希</td>
-</tr>
-<tr>
-<td>hash1</td>
+<td>hash</td>
 <td>string</td>
 <td>交易哈希</td>
 </tr>
 <tr>
-<td>hash2</td>
+<td>contractAddress</td>
 <td>string</td>
-<td>交易哈希</td>
+<td>智能合约地址</td>
 </tr>
 <tr>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<td>hashn</td>
-<td>string</td>
-<td>交易哈希</td>
-</tr>
-<tr>
-<td>&lt;/transactions&gt;</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>count</td>
+<td>nonce</td>
 <td>int</td>
-<td>区块中的交易数量</td>
+<td>账户操作次数</td>
 </tr>
 <tr>
-<td>&lt;/data&gt;</td>
+<td>codeHash</td>
+<td>string</td>
+<td>智能合约代码哈希</td>
+</tr>
+<tr>
+<td>&lt;/transaction&gt;</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td>ts</td>
 <td>int</td>
-<td>时间戳</td>
+<td>UTC时间戳（毫秒）</td>
 </tr>
 </tbody></table>
-<h2 id='dd09b2f1a9-2'>交易信息</h2>
-<p>查询当前交易哈希 <code>hash</code> 相关信息</p>
+<h2 id='6e8d262c42'>智能合约调用</h2>
+<p>智能合约函数调用</p>
 
 <blockquote>
 <p>Request:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-        </span><span class="nl">"hash"</span><span class="p">:</span><span class="s2">"0x02cd1c248d6bb2a1f2002646a29cb9cfda45b61d8f43fb8328e221224ef38d4f56"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"codeHash"</span><span class="p">:</span><span class="s2">"evidence_v6"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"contractAddress"</span><span class="p">:</span><span class="s2">"智能合约ABI示例中的内容"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"from"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"functionName"</span><span class="p">:</span><span class="s2">"AddEvidence"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"functionInputs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"FunctionInputs示例中的内容"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
     </span><span class="p">},</span><span class="w">
-    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"</span><span class="w">
+    </span><span class="nl">"signature"</span><span class="p">:</span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-11'>HTTP 请求</h3>
 <ul>
-<li>POST <code>/transaction/info</code></li>
+<li>POST <code>/contract/deploy</code></li>
 </ul>
 <h3 id='1f9ac54b15-11'>请求参数</h3>
 <table><thead>
@@ -1916,11 +2158,43 @@
 <td>NA</td>
 </tr>
 <tr>
-<td>hash</td>
+<td>codeHash</td>
 <td>string</td>
 <td>true</td>
 <td>NA</td>
-<td>交易哈希</td>
+<td>合约代码哈希(keccak-256)</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>contractAddress</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>智能合约地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>合约拥有者账户地址</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>functionName</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>函数名称</td>
+<td>NA</td>
+</tr>
+<tr>
+<td>functionInputs</td>
+<td>string</td>
+<td>true</td>
+<td>NA</td>
+<td>函数输入</td>
 <td>NA</td>
 </tr>
 <tr>
@@ -1954,10 +2228,12 @@
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"status"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"data"</span><span class="p">:{</span><span class="w">
-        </span><span class="nl">"hash"</span><span class="p">:</span><span class="s2">"0x02cd1c248d6bb2a1f2002646a29cb9cfda45b61d8f43fb8328e221224ef38d4f56"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"type"</span><span class="p">:</span><span class="s2">"File store"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"transactionTs"</span><span class="p">:</span><span class="mi">1640111610000</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"transaction"</span><span class="p">:{</span><span class="w">
+        </span><span class="nl">"from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"codeHash"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"nonce"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="nl">"ts"</span><span class="p">:</span><span class="mi">1650333610000</span><span class="p">,</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -1975,9 +2251,14 @@
 <td>请求处理结果  &quot;ok&quot;,&quot;error&quot;</td>
 </tr>
 <tr>
-<td>&lt;data&gt;</td>
+<td>&lt;transaction&gt;</td>
 <td>object</td>
 <td></td>
+</tr>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>拥有者账户地址</td>
 </tr>
 <tr>
 <td>hash</td>
@@ -1985,24 +2266,29 @@
 <td>交易哈希</td>
 </tr>
 <tr>
-<td>type</td>
+<td>codeHash</td>
 <td>string</td>
-<td>交易类型（&quot;File store&quot;, &quot;KV store&quot;, &quot;Contract depoly&quot;, &quot;Contract call&quot;）</td>
+<td>智能合约地址</td>
 </tr>
 <tr>
-<td>transactionTs</td>
+<td>nonce</td>
 <td>int</td>
-<td>交易时间戳</td>
+<td>账户操作次数</td>
 </tr>
 <tr>
-<td>&lt;/data&gt;</td>
+<td>result</td>
+<td>string</td>
+<td>智能合约执行返回值（需使用json再次对result返回字符串进行解析）</td>
+</tr>
+<tr>
+<td>&lt;/transaction&gt;</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td>ts</td>
 <td>int</td>
-<td>时间戳</td>
+<td>UTC时间戳（毫秒）</td>
 </tr>
 </tbody></table>
 
