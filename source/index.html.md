@@ -640,8 +640,227 @@ API文档
 > Example:
 
 ```go
+package evidence_v6
+
+import (
+	"encoding/json"
+	"ContractContext"
+)
+
+type Error struct {
+	message string
+	payload string
+}
+
+type EvidenceInfo struct {
+	EvidenceId   string `json:"evidenceId"`
+	UploaderSign string `json:"uploaderSign"`
+	EvidenceTxId string `json:"evidenceTxId"`
+	Content      string `json:"content"`
+}
+
+type CreateResult struct {
+	EvidenceId  string `json:"evidenceId,omitempty"`
+	TxId        string `json:"txId,omitempty"`
+	TxTimestamp string `json:"txTimestamp,omitempty"`
+}
+
+type QueryResult struct {
+	Key      string `json:"key,omitempty"`
+	Record   string `json:"record,omitempty"`
+	Bookmark string `json:"bookmark,omitempty"`
+}
+
+func AddEvidence(context ContractContext.Context, data string) *CreateResult {
+	evidenceinfo := &EvidenceInfo{}
+	err := json.Unmarshal([]byte(data), evidenceinfo)
+	stub := context.Getstub()
+	key := FormatEvidenceKey(evidenceinfo.EvidenceId)
+	evidenceState, err := stub.GetStringState(key)
+	if err != nil {
+		panic(Error{
+			message: "Evidence " + evidenceinfo.EvidenceId + " already exists",
+			payload: "EVIDENCE_ALREADY_EXIST",
+		})
+
+	}
+	txId := stub.GetTxId()
+	timeStamp := stub.GetTxTimestamp()
+	evidenceinfo.EvidenceTxId = txId
+	stub.PutStringState(key, evidenceState)
+	return &CreateResult{
+		EvidenceId:  evidenceinfo.EvidenceId,
+		TxId:        txId,
+		TxTimestamp: timeStamp,
+	}
+}
+
+func QueryEvidenceById(context ContractContext.Context, evidenceId string) *QueryResult {
+	stub := context.Getstub()
+	evidenceState, err := stub.GetStringState(evidenceId)
+	if err != nil {
+		panic(Error{
+			message: evidenceId,
+			payload: "NO_EVIDENCE_FOUND",
+		})
+	}
+	return &QueryResult{
+		Key:      evidenceId,
+		Record:   evidenceState,
+		Bookmark: "",
+	}
+}
+
+func QueryEvidenceByTxId(context ContractContext.Context, txId string) *QueryResult {
+	stub := context.Getstub()
+	query, _ := json.Marshal(struct {
+		Selector string `json:"selector"`
+	}{Selector: txId})
+	evidenceState, _ := json.Marshal(stub.GetQueryResult(string(query)))
+	return &QueryResult{
+		Key:      txId,
+		Record:   string(evidenceState),
+		Bookmark: "",
+	}
+}
+
+func FormatEvidenceKey(evidenceId string) string {
+	return "Evi_" + evidenceId
+}
 
 
+```
+
+## 智能合约ABI示例
+
+> Example:
+
+```json
+{
+    "contract_name" : "evidence_v6",
+    "contract_info" : "This is contract evidence_v6",
+    "contract_function" : [
+        {
+            "function_name" : "AddEvidence",
+            "function_inputs" : [
+                {
+                    "input_name" : "context",
+                    "input_type" : "context" 
+                },
+                {
+                    "input_name" : "data",
+                    "input_type" : "string" 
+                }
+            ],
+            "function_outputs" : [
+                {
+                    "output_name" : "CreateResult",
+                    "output_type" : "struct",
+                    "output_component" : [
+                        {
+                            "component_name" : "evidenceId",
+                            "component_type" : "string"
+                        },
+                        {
+                            "component_name" : "txId",
+                            "component_type" : "string"
+                        },
+                        {
+                            "component_name" : "txTimestamp",
+                            "component_type" : "string"
+                        }
+                    ] 
+                }
+            ]
+        },
+        {
+            "function_name" : "QueryEvidenceById",
+            "function_inputs" : [
+                {
+                    "input_name" : "context",
+                    "input_type" : "context" 
+                },
+                {
+                    "input_name" : "evidenceId",
+                    "input_type" : "string" 
+                }
+            ],
+            "function_outputs" : [
+                {
+                    "output_name" : "QueryResult",
+                    "output_type" : "struct",
+                    "output_component" : [
+                        {
+                            "component_name" : "key",
+                            "component_type" : "string"
+                        },
+                        {
+                            "component_name" : "record",
+                            "component_type" : "string"
+                        },
+                        {
+                            "component_name" : "bookmark",
+                            "component_type" : "string"
+                        }
+                    ] 
+                }
+            ]
+        },
+        {
+            "function_name" : "AddEvidence",
+            "function_inputs" : [
+                {
+                    "input_name" : "context",
+                    "input_type" : "context" 
+                },
+                {
+                    "input_name" : "txId",
+                    "input_type" : "string" 
+                }
+            ],
+            "function_outputs" : [
+                {
+                    "output_name" : "QueryResult",
+                    "output_type" : "struct",
+                    "output_component" : [
+                        {
+                            "component_name" : "key",
+                            "component_type" : "string"
+                        },
+                        {
+                            "component_name" : "record",
+                            "component_type" : "string"
+                        },
+                        {
+                            "component_name" : "bookmark",
+                            "component_type" : "string"
+                        }
+                    ] 
+                }
+            ]
+        }
+    ]
+}
+```
+
+
+## FunctionInputs示例
+
+> Example:
+
+```json
+[
+    {
+        "input_name" : "context",
+        "input_type" : "context", 
+        "input_value" : ""
+    },
+    {
+        "input_name" : "data",
+        "input_type" : "string",
+        "input_value" : "{\"evidenceId\":\"aa\",\"uploaderSign\":\"cc\",\"content\":\"dd\"}"
+    }
+]
 ```
 
 ## 智能合约部署
@@ -653,23 +872,31 @@ API文档
 ```json
 {
     "data":{
-        "number":1684633435,
+        "name":"evidence_v6",
+        "abi":"智能合约ABI示例中的内容",
+        "from":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "code":"智能合约代码示例中的内容",
+        "codeHash":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b",
         "ts":1650333610000,
     },
-    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+    "signature":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
 }
 ```
 
 ### HTTP 请求
 
-- POST `/block/info`
+- POST `/contract/deploy`
 
 ### 请求参数
 
 |    参数 | 数据类型 | 是否必须 | 默认值|       描述  | 取值范围 |
 | --------- | -------- | -------- | ------| ---------------- | -------- |
 | \<data\> | object | true  | NA |     | NA  |
-| number | int | true  | NA | 区块号   | NA  |
+| name | string | true  | NA | 合约名称   | NA  |
+| abi | string | true  | NA | 合约ABI   | NA  |
+| from | string | true  | NA | 合约拥有者账户地址   | NA  |
+| code | string | true  | NA | 合约代码   | NA  |
+| codeHash | string | true  | NA | 合约代码哈希(keccak-256)   | NA  |
 | ts  | int  | true  | NA | UTC时间戳（毫秒） | NA  |
 | \</data\> |   | true  | NA |     | NA  |
 | signature | string | true  | NA | 账户签名   | NA  |
@@ -679,13 +906,12 @@ API文档
 ```json
 {
     "status":"ok",
-    "data":{
-        "number":1684633435,
-        "transactions":[
-            "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
-            "0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
-            ],
-        "count":2,
+    "transaction":{
+        "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+        "contractAddress" : "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+        "nonce" : 10,
+        "codeHash": "0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b",
     },
     "ts":1650333610000,
 }
@@ -696,44 +922,49 @@ API文档
 | 字段名称  | 数据类型 | 描述                       |
 | --------- | -------- | -------------------------- |
 | status    | string   | 请求处理结果  "ok","error" |
-| \<data\>  | object   |                            |
-| number   | int64   | 区块号                   |
-| \<transactions\>   | array      | 列举交易哈希                   |
-| hash1   | string   | 交易哈希                   |
-| hash2   | string   | 交易哈希                   |
-| ...   | ...   | ...                   |
-| hashn   | string   | 交易哈希                   |
-| \</transactions\>   |       |                    |
-| count     | int      | 区块中的交易数量           |
-| \</data\> |          |                            |
-| ts        | int      | 时间戳                     |
+| \<transaction\>  | object   |                            |
+| from   | string   | 拥有者账户地址             |
+| hash       | string   | 交易哈希              |
+| contractAddress     | string   | 智能合约地址            |
+| nonce       | int   | 账户操作次数              |
+| codeHash     | string   | 智能合约代码哈希            |
+| \</transaction\> |          |                            |
+| ts        | int      | UTC时间戳（毫秒）          |
 
-## 交易信息
+## 智能合约调用
 
-查询当前交易哈希 `hash` 相关信息
+智能合约函数调用
 
 > Request:
 
 ```json
 {
     "data":{
-        "hash":"0x02cd1c248d6bb2a1f2002646a29cb9cfda45b61d8f43fb8328e221224ef38d4f56",
+        "codeHash":"evidence_v6",
+        "contractAddress":"智能合约ABI示例中的内容",
+        "from":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "functionName":"AddEvidence",
+        "functionInputs" : "FunctionInputs示例中的内容",
         "ts":1650333610000,
     },
-    "signature":"0x4c49d393b56749d6a2048f2ef6eaa60dba54b45d78f3d0ce9bccb97f6f1e884b"
+    "signature":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
 }
 ```
 
 ### HTTP 请求
 
-- POST `/transaction/info`
+- POST `/contract/deploy`
 
 ### 请求参数
 
 |    参数 | 数据类型 | 是否必须 | 默认值|       描述  | 取值范围 |
 | --------- | -------- | -------- | ------| ---------------- | -------- |
 | \<data\> | object | true  | NA |     | NA  |
-| hash | string | true  | NA | 交易哈希   | NA  |
+| codeHash | string | true  | NA | 合约代码哈希(keccak-256)   | NA  |
+| contractAddress | string | true  | NA | 智能合约地址   | NA  |
+| from | string | true  | NA | 合约拥有者账户地址   | NA  |
+| functionName | string | true  | NA | 函数名称   | NA  |
+| functionInputs | string | true  | NA | 函数输入   | NA  |
 | ts  | int  | true  | NA | UTC时间戳（毫秒） | NA  |
 | \</data\> |   | true  | NA |     | NA  |
 | signature | string | true  | NA | 账户签名   | NA  |
@@ -743,10 +974,12 @@ API文档
 ```json
 {
     "status":"ok",
-    "data":{
-        "hash":"0x02cd1c248d6bb2a1f2002646a29cb9cfda45b61d8f43fb8328e221224ef38d4f56",
-        "type":"File store",
-        "transactionTs":1640111610000,
+    "transaction":{
+        "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+        "codeHash" : "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+        "nonce" : 10,
+        "result": "",
     },
     "ts":1650333610000,
 }
@@ -757,9 +990,11 @@ API文档
 | 字段名称  | 数据类型 | 描述                       |
 | --------- | -------- | -------------------------- |
 | status    | string   | 请求处理结果  "ok","error" |
-| \<data\>  | object   |                            |
-| hash   | string   | 交易哈希                   |
-| type   | string   | 交易类型（"File store", "KV store", "Contract depoly", "Contract call"）                   |
-| transactionTs        | int      | 交易时间戳                     |
-| \</data\> |          |                            |
-| ts        | int      | 时间戳                     |
+| \<transaction\>  | object   |                            |
+| from   | string   | 拥有者账户地址             |
+| hash       | string   | 交易哈希              |
+| codeHash     | string   | 智能合约地址            |
+| nonce       | int   | 账户操作次数              |
+| result     | string   | 智能合约执行返回值（需使用json再次对result返回字符串进行解析）            |
+| \</transaction\> |          |                            |
+| ts        | int      | UTC时间戳（毫秒）          |
