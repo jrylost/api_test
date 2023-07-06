@@ -940,11 +940,10 @@ func FormatEvidenceKey(evidenceId string) string {
 ```json
 {
     "data":{
-        "codeHash":"evidence_v6",
-        "contractAddress":"智能合约ABI示例中的内容",
+        "codeHash":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "from":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "functionName":"AddEvidence",
-        "functionInputs" : "FunctionInputs示例中的内容",
+        "params" : "FunctionInputs示例中的内容",
         "ts":1650333610000,
     },
     "signature":"0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
@@ -961,10 +960,9 @@ func FormatEvidenceKey(evidenceId string) string {
 | --------- | -------- | -------- | ------| ---------------- | -------- |
 | \<data\> | object | true  | NA |     | NA  |
 | codeHash | string | true  | NA | 合约代码哈希(keccak-256)   | NA  |
-| contractAddress | string | true  | NA | 智能合约地址   | NA  |
 | from | string | true  | NA | 合约拥有者账户地址   | NA  |
 | functionName | string | true  | NA | 函数名称   | NA  |
-| functionInputs | string | true  | NA | 函数输入   | NA  |
+| params | string | true  | NA | 函数输入   | NA  |
 | ts  | int  | true  | NA | UTC时间戳（毫秒） | NA  |
 | \</data\> |   | true  | NA |     | NA  |
 | signature | string | true  | NA | 账户签名   | NA  |
@@ -977,7 +975,7 @@ func FormatEvidenceKey(evidenceId string) string {
     "transaction":{
         "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
-        "codeHash" : "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+        "ContractAddress" : "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
         "nonce" : 10,
         "result": "",
     },
@@ -993,7 +991,7 @@ func FormatEvidenceKey(evidenceId string) string {
 | \<transaction\>  | object   |                            |
 | from   | string   | 拥有者账户地址             |
 | hash       | string   | 交易哈希              |
-| codeHash     | string   | 智能合约地址            |
+| ContractAddress     | string   | 智能合约地址            |
 | nonce       | int   | 账户操作次数              |
 | result     | string   | 智能合约执行返回值（需使用json再次对result返回字符串进行解析）            |
 | \</transaction\> |          |                            |
