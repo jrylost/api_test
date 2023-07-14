@@ -351,13 +351,11 @@ API文档
 {
     "status":"ok",
     "data":{
-        "transaction":{
-            "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
-            "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
-            "to": "0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d",
-            "nonce": 15,
-            "value": 100000000,
-        }
+        "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
+        "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
+        "to": "0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d",
+        "nonce": 15,
+        "value": 100000000,
     },
     "ts":1650333610000,
 }
@@ -369,13 +367,11 @@ API文档
 | ---------------- | -------- | -------------------------- |
 | status           | string   | 请求处理结果  "ok","error" |
 | \<data\>         | object   |                            |
-| \<transaction\>  | object   |                            |
 | hash             | string   | 交易哈希                   |
 | from             | string   | 转出账户地址               |
 | to               | string   | 转入账户地址               |
 | nonce            | int      | 账户操作次数               |
 | value            | int      | 转账金额                   |
-| \</transaction\> |          |                            |
 | \</data\>        |          |                            |
 | ts               | int      | UTC时间戳（毫秒）          |
 
@@ -428,7 +424,7 @@ API文档
 ```json
 {
     "status":"ok",
-    "transaction":{
+    "data":{
         "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
         "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "fileHash": "0x1c1643c57b0ec7542498f693f201da4ccbb9991289e45631436bad366fdc111d",
@@ -443,12 +439,12 @@ API文档
 | 字段名称         | 数据类型 | 描述                       |
 | ---------------- | -------- | -------------------------- |
 | status           | string   | 请求处理结果  "ok","error" |
-| \<transaction\>  | object   |                            |
+| \<data\>  | object   |                            |
 | hash             | string   | 交易哈希（文件存储）       |
 | from          | string   | 文件存储账户地址           |
 | fileHash         | string   | 文件哈希(Keccak256)                   |
 | nonce            | int      | 账户操作次数               |
-| \</transaction\> |          |                            |
+| \</data\> |          |                            |
 | ts               | int      | UTC时间戳（毫秒）          |
 
 ## 文件读取
@@ -488,7 +484,7 @@ API文档
 ```json
 {
     "status":"ok",
-    "transaction":{
+    "data":{
         "fileHash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
         "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "content":"eX26q+uozgOQvTmTkaUj1ABv7oIdZjMQ1h4p51fi7Di7rGD+tlZG9SNfkRAVujoOohkg8laRsTAtQiSChPj4/VfrHMDVRp/bQjvMyZ7xmDK1LTZAyIkDwOFnrhqqFr4gDUI9XS53bY6yLpnVFcN7e896P+CHQ4FLbCm5UOdJxGcoLFUAJUfjsAm+ZYvW6hnvcRpjdq4hqrp74E5+fuvS35O1Mxni9RRt9zkcBDE2b5QS0GCFTHw+zSrnF9AU8RxfzIhEpEu9u/7iw2d8eqEMZotf5CnR3ypt7mlErkz8nMAnUG6CSjzpT78LnrPZALp4L3LuuuPhmstAJB+MK2dxD8J0wEG8qc8ZtEHLd3DfsdKla6UdvSKDH70mXdXJKLNjtGwOUY/rPzheAwBAcXoD60o42RrmMQCOw2z99zZHGOe2GIp3jypF7XkUW3tXsgwBMbjcnP0+yAoGy0tzC7oQushNfMYhfw/EKVW1PvoD58OKTaGotc9/tDVrE1XcJAMA4/iNbDWlngscX/d3PHYwSLcdP51cb+nJKJ4tACbQNZCrwPrLKNleiQ6/84mUUPNOzXzR1ShC5VTeZl9SyIZqOfxSk81MkzAD0PnqWbVHhdjJUYjzy/S0cD/cVQdbzkHfHDKgQIMhBv0HxU24o5In+r/PbLd3MlQMjV/toYPylk8=",
@@ -502,11 +498,11 @@ API文档
 | 字段名称  | 数据类型 | 描述                       |
 | --------- | -------- | -------------------------- |
 | status    | string   | 请求处理结果  "ok","error" |
-| \<transaction\>  | object   |                            |
+| \<data\>  | object   |                            |
 | fileHash  | string   | 文件哈希(Keccak256)                   |
 | from   | string   | 文件存储账户地址           |
 | content   | string   | 文件内容(base64-encoded)   |
-| \</transaction\> |          |                            |
+| \</data\> |          |                            |
 | ts        | int      | UTC时间戳（毫秒）          |
 
 ## KV存储
@@ -550,7 +546,7 @@ API文档
 ```json
 {
     "status":"ok",
-    "transaction":{
+    "data":{
         "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
         "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -565,12 +561,12 @@ API文档
 | 字段名称         | 数据类型 | 描述                       |
 | ---------------- | -------- | -------------------------- |
 | status           | string   | 请求处理结果  "ok","error" |
-| \<transaction\>  | object   |                            |
+| \<data\>  | object   |                            |
 | hash             | string   | 交易哈希（KV存储）         |
 | from          | string   | 文件存储账户地址           |
 | key              | string   | KV存储的key                |
 | nonce            | int      | 账户操作次数               |
-| \</transaction\> |          |                            |
+| \</data\> |          |                            |
 | ts               | int      | UTC时间戳（毫秒）          |
 
 ## KV读取
@@ -610,7 +606,7 @@ API文档
 ```json
 {
     "status":"ok",
-    "transaction":{
+    "data":{
         "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         "value": "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
@@ -624,11 +620,11 @@ API文档
 | 字段名称  | 数据类型 | 描述                       |
 | --------- | -------- | -------------------------- |
 | status    | string   | 请求处理结果  "ok","error" |
-| \<transaction\>  | object   |                            |
+| \<data\>  | object   |                            |
 | from   | string   | 拥有者账户地址             |
 | key       | string   | KV键值对的key              |
 | value     | string   | KV键值对的value            |
-| \</transaction\> |          |                            |
+| \</data\> |          |                            |
 | ts        | int      | UTC时间戳（毫秒）          |
 
 
@@ -906,7 +902,7 @@ func FormatEvidenceKey(evidenceId string) string {
 ```json
 {
     "status":"ok",
-    "transaction":{
+    "data":{
         "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
         "contractAddress" : "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
@@ -922,13 +918,13 @@ func FormatEvidenceKey(evidenceId string) string {
 | 字段名称  | 数据类型 | 描述                       |
 | --------- | -------- | -------------------------- |
 | status    | string   | 请求处理结果  "ok","error" |
-| \<transaction\>  | object   |                            |
+| \<data\>  | object   |                            |
 | from   | string   | 拥有者账户地址             |
 | hash       | string   | 交易哈希              |
 | contractAddress     | string   | 智能合约地址            |
 | nonce       | int   | 账户操作次数              |
 | codeHash     | string   | 智能合约代码哈希            |
-| \</transaction\> |          |                            |
+| \</data\> |          |                            |
 | ts        | int      | UTC时间戳（毫秒）          |
 
 ## 智能合约调用
@@ -974,7 +970,7 @@ func FormatEvidenceKey(evidenceId string) string {
 ```json
 {
     "status":"ok",
-    "transaction":{
+    "data":{
         "from": "0x95b01199edc2d8943ea9edb0ae5908a70bb960f23bc23310ed030e15ecc60b18",
         "hash": "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
         "contractAddress" : "0xcc7c9dbe7bb4e409967803c6a2c4859e5068d4044ff7cf91a1c5179b92bbf967",
@@ -990,11 +986,11 @@ func FormatEvidenceKey(evidenceId string) string {
 | 字段名称  | 数据类型 | 描述                       |
 | --------- | -------- | -------------------------- |
 | status    | string   | 请求处理结果  "ok","error" |
-| \<transaction\>  | object   |                            |
+| \<data\>  | object   |                            |
 | from   | string   | 拥有者账户地址             |
 | hash       | string   | 交易哈希              |
 | contractAddress     | string   | 智能合约地址            |
 | nonce       | int   | 账户操作次数              |
 | result     | string   | 智能合约执行返回值（需使用json再次对result返回字符串进行解析）            |
-| \</transaction\> |          |                            |
+| \</data\> |          |                            |
 | ts        | int      | UTC时间戳（毫秒）          |
